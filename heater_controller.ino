@@ -14,8 +14,7 @@
 // ================== Configuration of device ==================
 // For different hardware version (PCB), change HW_VERSION in pinout.h
 
-// Number of supported channels - 2 or 4
-#define N_CHANNELS 4
+
 
 // Minimum long press time for button
 #define LONG_PRESS_TIME_MS 600

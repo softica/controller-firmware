@@ -54,14 +54,14 @@ public:
             if (event == button_t::event_t::BUTTON_SHORT_PRESSED)
             {
                 current_output++;
-                if (current_output > MAX_OUTPUTS_N)
+                if (current_output > N_CHANNELS)
                 {
                     current_output = 1;
                 }
-                if (n_channels == 2 && current_output > 1)
-                {
-                    current_output = MAX_OUTPUTS_N;
-                }
+                //if (n_channels == 2 && current_output > 1)
+                //{
+                //    current_output = MAX_OUTPUTS_N;
+                //}
                 debug::println("logic: show out", current_output);
                 update_leds(led);
             }
@@ -102,7 +102,7 @@ public:
         auto command = serial_parser.get_command();
         if (command.command == serial_parser_t::command_name_t::COMMAND_SET)
         {
-            for (int i = 0; i < MAX_OUTPUTS_N; i++)
+            for (int i = 0; i < N_CHANNELS; i++)
             {
                 power_levels[i] = command.parameters[i];
                 outputs.set_power(i + 1, power_level_steps[command.parameters[i]]);
@@ -112,9 +112,19 @@ public:
         if (command.command == serial_parser_t::command_name_t::COMMAND_SET ||
             command.command == serial_parser_t::command_name_t::COMMAND_GET)
         {
-            char write_arr[] = {command.command,
-                                power_levels[0], power_levels[1], power_levels[2], power_levels[3]};
-            Serial.write(write_arr, MAX_OUTPUTS_N + 1);
+            char write_arr[N_CHANNELS + 1]; 
+            write_arr[0] = command.command;
+            if (N_CHANNELS == 4) {
+                write_arr[1] = power_levels[0]; 
+                write_arr[2] = power_levels[1];
+                write_arr[3] = power_levels[2];
+                write_arr[4] = power_levels[3];
+            }
+            else if (N_CHANNELS == 2) {
+                write_arr[1] = power_levels[0];                
+                write_arr[2] = power_levels[1];
+            }
+            Serial.write(write_arr, N_CHANNELS + 1);
         }
     }
 
@@ -127,7 +137,12 @@ private:
     };
     state_t state = STATE_INVALID;
     int n_channels;
-    int power_levels[MAX_OUTPUTS_N] = {0};
+#if N_CHANNELS == 4
+    int power_levels[N_CHANNELS] = {4, 4, 4, 4};
+#endif
+#if N_CHANNELS == 2
+    int power_levels[N_CHANNELS] = {4, 4};
+#endif
     uint8_t current_output = 1;
     uint8_t *power_level_steps;
     void update_leds(led_t &led)

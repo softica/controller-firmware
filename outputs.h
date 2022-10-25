@@ -6,6 +6,8 @@
 #include <stdbool.h>
 
 // pin configuration is staticly pulled from pinout.h in outputs.cpp
+// Number of supported channels - 2 or 4
+#define N_CHANNELS 4
 
 class outputs_t
 {

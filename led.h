@@ -12,6 +12,7 @@
 #include "TLC591x.h"
 #include "TLC59025.h"
 #include "debug.h"
+#include "outputs.h"
 
 // TODO: TLC59025
 // TODO: brightness control (AnalogWrite on OE pin should be sufficient)
@@ -164,8 +165,8 @@ private:
     unsigned int led_register = 0;
     TLC591x driver_TLC5916;
     TLC59025_t driver_TLC59025;
-    uint8_t output_led_numbers[MAX_OUTPUTS_N] = LED_OUTPUT_LIST;
-    uint8_t power_led_numbers[POWER_LEVEL_N] = LED_POWER_LIST;
+    uint8_t output_led_numbers[N_CHANNELS] = LED_OUTPUT_LIST;
+    uint8_t power_led_numbers[MAX_OUTPUTS_N] = LED_POWER_LIST;
     int blink_threshold_ms;
     int blink_period_ms;
     int blink_duty_cycle_ms;

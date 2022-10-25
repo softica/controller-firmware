@@ -6,8 +6,10 @@
 #include <stdbool.h>
 #include "debug.h"
 #include "pinout.h"
+#include "outputs.h"
 
-#define COMMAND_PARAMETERS_N MAX_OUTPUTS_N
+//#define COMMAND_PARAMETERS_N MAX_OUTPUTS_N
+#define COMMAND_PARAMETERS_N N_CHANNELS
 #define DEBUG_PARSER false
 
 class serial_parser_t
@@ -96,7 +98,7 @@ public:
                 Serial.print("ser ");
                 Serial.print(state_to_str(state));
                 Serial.print(" ");
-                Serial.print(data);
+                Serial.println(data);
             }
 
             if (state == STATE_WAITING_FOR_COMMAND)
@@ -113,12 +115,12 @@ public:
             {
                 processed_command.parameters[parameter_processed] = data;
                 parameter_processed++;
-                if (parameter_processed >= COMMAND_PARAMETERS_N)
+                if (parameter_processed > COMMAND_PARAMETERS_N || processed_command.command == COMMAND_GET)
                 {
                     state = STATE_WAITING_FOR_ENDLINE;
                 }
             }
-            else if (state == STATE_WAITING_FOR_ENDLINE)
+            if (state == STATE_WAITING_FOR_ENDLINE)
             {
                 if (data == '\r' || data == '\n')
                 {
@@ -129,10 +131,9 @@ public:
                 }
                 state = STATE_WAITING_FOR_COMMAND;
             }
-            else
-            {
-                state = STATE_WAITING_FOR_COMMAND;
-            }
+            //else {
+            //    state = STATE_WAITING_FOR_COMMAND;
+            //}
         }
     }
 
@@ -143,6 +144,7 @@ public:
 
     command_t get_command()
     {
+        
         if (have_valid_command)
         {
             have_valid_command = false;

@@ -4,6 +4,7 @@
 
 #ifndef PINOUT_H__
 #define PINOUT_H__
+#include "outputs.h"
 
 // Hardware versions configuration
 #define HW_VERSION 200 // HW version 1.00
@@ -25,8 +26,13 @@ enum led_controller_type_t
     #define LED_CONTROLLER_TYPE LED_CONTROLLER_TLC5916
     #define LED_OE_PIN          3
     #define LED_LE_PIN          SS
-    #define LED_OUTPUT_LIST     {7,6,5,4}
     #define LED_POWER_LIST      {0,1,2,3}
+#if (N_CHANNELS == 4)
+    #define LED_OUTPUT_LIST     {7,6,5,4}
+#endif
+#if (N_CHANNELS == 2)
+    #define LED_OUTPUT_LIST     {7,4}
+#endif
 
     #define OUT_PIN1            10
     #define OUT_DDR1            DDRB
@@ -54,8 +60,13 @@ enum led_controller_type_t
     #define LED_CONTROLLER_TYPE LED_CONTROLLER_TLC59025
     #define LED_OE_PIN          3
     #define LED_LE_PIN          SS
-    #define LED_OUTPUT_LIST     {12,13,14,15}
     #define LED_POWER_LIST      {0,1,2,3}
+#if (N_CHANNELS == 4)
+    #define LED_OUTPUT_LIST     {12,13,14,15}
+#endif
+#if (N_CHANNELS == 2)
+    #define LED_OUTPUT_LIST     {12,15}
+#endif
 
     #define OUT_PIN1            10
     #define OUT_DDR1            DDRB
