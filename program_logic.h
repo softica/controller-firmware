@@ -58,10 +58,6 @@ public:
                 {
                     current_output = 1;
                 }
-                //if (n_channels == 2 && current_output > 1)
-                //{
-                //    current_output = MAX_OUTPUTS_N;
-                //}
                 debug::println("logic: show out", current_output);
                 update_leds(led);
             }
