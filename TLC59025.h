@@ -39,6 +39,7 @@ public:
         digitalWrite(pin_SDI, 0);
         digitalWrite(pin_LE, 0);
         digitalWrite(pin_OE, 1); // Disable
+        analogWrite(pin_OE, 252);
     }
 
     /**
@@ -56,6 +57,7 @@ public:
         digitalWrite(pin_LE, 0);
 
         digitalWrite(pin_OE, 0); // Enable
+        analogWrite(pin_OE, 252);
     }
 
 private:
